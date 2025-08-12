@@ -14,32 +14,17 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       
-    - name: Set up LaTeX with full TeX Live
-      uses: xu-cheng/setup-latex@v1
+    - name: Set up LaTeX
+      uses: xu-cheng/latex-action@v3
       with:
-        version: 'latest'
+        root_file: fixed.tex
+        latexmk_use_xelatex: true
         
-    - name: Install additional fonts
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y fonts-liberation fonts-liberation-sans fonts-liberation-serif
-        sudo fc-cache -fv
-        
-    - name: Compile with XeLaTeX
-      run: |
-        xelatex -interaction=nonstopmode -output-directory=. fixed.tex
-        xelatex -interaction=nonstopmode -output-directory=. fixed.tex
-        
-    - name: Check if PDF was created
-      run: |
-        if [ -f "fixed.pdf" ]; then
-          echo "PDF compilation successful"
-          ls -la *.pdf
-        else
-          echo "PDF compilation failed"
-          cat fixed.log
-          exit 1
-        fi
+    - name: Upload PDF artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: resume-pdf
+        path: fixed.pdf
         
     - name: Commit PDF to repository
       run: |
@@ -47,4 +32,4 @@ jobs:
         git config --local user.name "GitHub Action"
         git add fixed.pdf
         git commit -m "Auto-compile: Update resume PDF [skip ci]" || exit 0
-        git push 
+        git push
