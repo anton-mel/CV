@@ -1,0 +1,239 @@
+\documentclass{article}
+\usepackage{xeCJK}
+\setCJKmainfont{IPAexMincho} % or another Japanese font like Noto Sans CJK
+\usepackage[margin=0.53in, top=0.8in]{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{soul}   % For highlighting
+\usepackage{pgfkeys}
+\usepackage{amsmath}
+\usepackage{tcolorbox}
+\usepackage{pxfonts}
+\usepackage{calc}
+\usepackage{mdframed}
+\pagestyle{empty}
+\usepackage{ulem}
+\usepackage{fontawesome}
+
+\definecolor{highlightblue}{rgb}{0.91,0.95,1} % Light blue
+\definecolor{lightgray}{RGB}{204,204,204}
+
+% Define custom aquamarine color using RGB values
+\definecolor{midnightblue}{rgb}{0.0, 0.2, 0.4}
+\definecolor{customcolor}{HTML}{E8E8E8}
+
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=midnightblue,
+    urlcolor=midnightblue,
+}
+
+\usepackage{fontspec}
+\setmainfont{Georgia}
+\begin{document}
+
+\begin{center}
+    \textbf{\LARGE Anton Melnychuk} \\[0.5em]
+    +1 (475) 287 8907 \textbullet{} New Haven, CT, USA (F1 visa; OPT Work Authorization) \textbullet{} Ukrainian \\
+    \href{mailto:anton.melnychuk@yale.edu}{anton.melnychuk@yale.edu} \textbullet{} \href{https://github.com/anton-mel}{github.com/anton-mel} \textbullet{} \href{https://www.linkedin.com/in/antonmelnychuk/}{in/antonmelnychuk}
+\end{center}
+
+% , USA (F1 Student Visa), 1-475-287-8907 \textbar\ \faicon{github}  \url{ https://github.com/anton-mel} \textbar\ anton.melnychuk@yale.edu \\
+%  \setstretch{1.2}Undergraduate student | Ukrainian (Native) | Polish (Limited) | English | Japanese (Advanced) \vspace{-2ex}
+
+\vspace{-4ex}
+\section*{\vspace{0ex}\textcolor{gray}{\rule[0ex]{0em}{0ex}}\hspace{0em}\normalsize\textnormal{\textcolor{darkgray}{EDUCATION}}\hspace{0.7em}\textcolor{customcolor}{\rule[0.5ex]{\dimexpr\linewidth-6.4em}{0.5pt}}\vspace{-2ex}}
+\textbf{Yale University}, B.S. in Electrical Engineering \& Computer Science \hfill \textit{May 2026 (Senior)}
+ 
+\begin{itemize}[topsep=1pt]
+\setlength\itemsep{-0.4em}
+    \item[$\blacktriangleright$]\setstretch{1.2} \textbf{Relevant Coursework (GPA 3.65/4):} Computer Architecture (EE)$^{\dag}$, Introduction to VLSI System Design (EE), Building Distributed Systems, Big Data Systems (Disaggregated Infra), Computer Networks, Building AI Infra Systems, Design and Implementation of Operating Systems$^{\dag}$, Principles of Computer System Design.
+\end{itemize}
+
+\noindent\vspace{-2ex}\textbf{Osaka Gakuin University}, Study Abroad Japan, Intermediate-Advanced Japanese.
+\hfill \textit{Jun 2023 - Aug 2023}
+
+
+\vspace{-1.5ex}
+\section*{\vspace{0ex}\textcolor{gray}{\rule[0ex]{0em}{0ex}}\hspace{0em}\normalsize\textnormal{\textcolor{gray}{}}\hspace{8em}\textcolor{customcolor}{\rule[0.5ex]{\dimexpr\linewidth-16em}{0.5pt}}\vspace{-2ex}}
+
+\vspace{0.4em}
+\noindent\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} l r @{}}
+    \textit{Programming:} & Rust; C; C++; SystemVerilog \quad (VHDL; Python; Go; Bash; x86-64 asm; Systemd)\vspace{0.2em} \\
+    \textit{Technologies:} & Linux; eBPF/LKM; Xilinx (Vivado, Vitis); Yocto; AWS/GCP; K8s; Terraform; git\vspace{0.2em} \\
+    \textit{Language Skills:} & English; Ukrainian (Native); Russian; Japanese (Advanced); Polish (Limited)\vspace{0.2em} \\
+\end{tabular*}
+
+\vspace{-2ex}
+\section*{\vspace{0ex}\textcolor{gray}{\rule[0ex]{0em}{0ex}}\hspace{0em}\normalsize\textnormal{\textcolor{darkgray}{RELEVANT WORK EXPERIENCE}}\hspace{0.7em}\textcolor{customcolor}{\rule[0.5ex]{\dimexpr\linewidth-16em}{0.5pt}}\vspace{-2ex}}
+
+\noindent\textbf{Thesis}, Brain Computer Interfaces (Prof. Bhattacharjee) \hfill \textit{July 2025 – Present (Ongoing)} 
+\begin{itemize}[noitemsep, topsep=1pt]
+    \item[$\blacktriangleright$]\setstretch{1.2} Reorganized pipeline and RTL/VLSI peripheral interfaces for the previously taped-out \href{https://www.cs.yale.edu/homes/abhishek/ksriram-isca20.pdf}{HALO}, a pipelined neural-processor BCI ASIC accelerating neural signal processing to 46 Mbps within an ultra-low-power budget.
+   % \item[$\blacktriangleright$]\setstretch{1.2} Leading BCI ASIC  design and timing/power certification of the distributed \href{https://www.cs.yale.edu/homes/abhishek/ksriram-isca20.pdf}{HALO} neural-processor. Built a real-time data acquisition testbed with custom PCBs and SPI links to interface neural-sensing ASICs/FPGAs.
+\end{itemize} \vspace{0.7ex}
+
+
+% \noindent\textbf{Huawei Dresden OS Kernel Lab}, Germany (Offer Extended) \hfill \textit{Summer 2025 (not pursued/ visa constraints)} \vspace{0.7ex}
+
+\noindent{\textbf{\textbf{Research Intern}}, Yale Efficient Computing Lab (Prof. Lin Zhong) \href{https://antonmel.com/public/helios.png}{[View]}
+\hfill \textit{Jan 2024 - Present [1.5 year]}
+\begin{itemize}[topsep=1pt]
+\setlength\itemsep{-0.3em}
+
+    \item[$\blacktriangleright$] \setstretch{1.2} Setup and implemented Vivado PS/PL design for a QEC decoding system that overcomes real-time 100 logical qubit decoding resource constraints using a distributed GTX Aurora SPF+ network of 5 Xilinx VMK180 FPGAs.
+    \item[$\blacktriangleright$] \setstretch{1.2}Partnered with AMD to co-develop a scalable SoC management tool for remote VFS–based deployment of Xilinx Versal/UltraScale+ FPGAs, enabling Linux runtime reconfiguration (ConfigFS) and A/B fallback reboot full-swapping.
+\end{itemize}
+
+\noindent{\textbf{Rust Operating System}}, System Programming Course \href{https://www.github.com/anton-mel/WeensyOS}{[View]}
+\setstretch{1.2}
+\hfill \textit{Sep 2024 - Apr 2025 [8 month]}
+\begin{itemize}[topsep=1pt]
+\setlength\itemsep{-0.2em}
+    \item[$\blacktriangleright$]\setstretch{1.2} Developed rWeensyOS (5k+ LOC), a minimal POSIX-compatible teaching-purpose microkernel written in memory-safe Rust with FFI bindings to a C/x86\_64 assembly bootloader; adopted by Yale's core systems course (Spring '24).
+    \item[$\blacktriangleright$]\setstretch{1.2} Assisted on a prototype Rust-based network driver for Theseus, experimental Rust operating system, with support for high-throughput NICs (e.g. 10GbE), integrating eBPF hooks for dynamic packet filtering and runtime safety analysis.
+
+    % \item[$\blacktriangleright$] \setstretch{1.2} Weensy serves as a showcase study of how to bind existing industry C legacy code to Rust (see projects). Conducted formal verification of \href{https://github.com/theseus-os/Theseus}{TheseusOS} via Prusti, an experimental OS that shifts hardware responsibilities to Rust compiler.
+\end{itemize}
+
+% \vspace{-0.5ex}
+% \noindent\hfill\textcolor{customcolor}{\rule[0.5ex]{0.3\linewidth}{0.5pt}}\hfill
+% \vspace{-0.5ex}
+
+% \noindent\textbf{Huawei Dresden OS Kernel Lab}, Germany (Offer Extended) \hfill \textit{Summer 2025 (not pursued/ visa constraints)} \vspace{0ex}
+
+\noindent{\textbf{\textbf{Embedded Engineer}}, Iron Flight (Ukraine Humanitarian Drone R\&D)
+\setstretch{1.2}
+\hfill \textit{July 2024 - December 2024 [5 month]}
+\begin{itemize}[topsep=1pt]
+\setlength\itemsep{-0.3em}
+    % \item\setstretch{1.2} Lead the development of customized low-latency \href{https://ukrfreedomfund.org/campaigns/drones-for-defenders/}{humanitarian drones} for Ukraine; deployed 125 units in 2024.
+    \item[$\blacktriangleright$] \setstretch{1.2} Partitioned drone DNN workloads from STM32 MCU to a remote host with onboard FPV goggles.
+    % \item \setstretch{1.2} Conducted testing and identified bottlenecks caused by OpenCV; developed a custom V4L2 driver for optimization.
+\end{itemize} 
+
+
+
+
+
+
+\vspace{-2ex}
+\section*{\vspace{0ex}\textcolor{gray}{\rule[0ex]{0em}{0ex}}\hspace{0em}\normalsize\textnormal{\textcolor{darkgray}{OPEN SOURCE CONTRIBUTOR}}\hspace{0.7em}\textcolor{customcolor}{\rule[0.5ex]{\dimexpr\linewidth-15.4em}{0.5pt}}\vspace{-2ex}}
+
+\noindent\textbf{Rust for Linux Initiative}, Open-Source Contributor \href{https://github.com/anton-mel/linux}{[View]} \hfill \textit{June 2024 – July 2024 [1 month]}
+\begin{itemize}[noitemsep, topsep=1pt]
+  \item[$\blacktriangleright$] \setstretch{1.2} Contributed to open-source Linux kernel (Ubuntu 22.04) to allow kernel cross-compile Rust loadable kernel modules.
+\end{itemize}
+
+\noindent\textbf{Fast Raft: Hierarchical Consensus}, Performance-Based Study \href{https://github.com/anton-mel/FastRaft}{[View]} \hfill \textit{Nov 2024 – Feb 2025 [3 month]}
+\begin{itemize}[noitemsep, topsep=1pt]
+\item[$\blacktriangleright$] \setstretch{1.2} Developed the first gRPC-based implementation of the Fast Raft (vs Raft) hierarchical consensus algorithm in Go.
+% \item[$\blacktriangleright$] \setstretch{1.2} Containerized Raft/FastRaft nodes and deployed them on AWS EKS via Terraform using HCL orchestration.
+% across three US regions, rigorously evaluating performance and fault tolerance differences at scale through Chaos Mesh.
+\end{itemize}
+
+
+\vspace{-2ex}
+\section*{\vspace{0ex}\textcolor{gray}{\rule[0ex]{0em}{0ex}}\hspace{0em}\normalsize\textnormal{\textcolor{darkgray}{PROJECTS}}\hspace{0.7em}\textcolor{customcolor}{\rule[0.5ex]{\dimexpr\linewidth-5.4em}{0.5pt}}\vspace{-2ex}}
+
+\noindent\textbf{FPGA-Based HFT Accelerator}, Personal Project (modeled after MIT 6.111)
+\hfill \textit{June 2025 – Present (Ongoing)}
+\begin{itemize}[noitemsep, topsep=1pt]
+  \item[$\blacktriangleright$] \setstretch{1.2} Custom open-source FPGA high-frequency trading accelerator, achieving sub-$\mu\text{s}$ latency over NASDAQ ITCH.
+  \item[$\blacktriangleright$] Pipelined architecture for real-time parsing, book-building, and MVP trading with scalable throughput.
+\end{itemize}
+
+\noindent\textbf{Custom CPU with Speculative OoO Execution}, Computer Architecture \href{https://github.com/anton-mel/OoO-PARCv2/tree/main}{[View]} \hfill \textit{March 2025 – May 2025 [2 month]}
+\begin{itemize}[noitemsep, topsep=1pt]
+    \item[$\blacktriangleright$] \setstretch{1.2} Built a SystemVerilog CPU with speculative fetch, dynamic scheduling, reorder buffer, and in-order retirement.
+  \item[$\blacktriangleright$] Achieved an average 33.2\% speedup on SPEC-like benchmarks with robust handling of WAW hazards and data deps.
+\end{itemize}
+
+
+
+% \noindent\textbf{mCertiKOS Flock}, Custom File Locking \href{https://github.com/anton-mel/linux-flock}{[View]} \hfill \textit{June 2024 – July 2024 [1 month]}
+% \begin{itemize}[noitemsep, topsep=1pt]
+%   \item \setstretch{1.2} Ported Linux's inode-based advisory file locking syscall (flock) to mCertiKOS in Yale's OS course for debugging.
+% \end{itemize}
+
+
+
+
+% \noindent{\textbf{Proc-Assertions Cargo Crate}, TheseusOS Verification \href{https://github.com/anton-mel/proc-assertions}{[View]} \setstretch{1.2}
+% \hfill \textit{Oct 2024 - Oct 2024 [1 month]}
+% \begin{itemize}[topsep=1pt]
+% \setlength\itemsep{-0.3em}
+%     \item \setstretch{1.2} Developed a Rust framework (2k+ inst.) for stricter compile-time enforcement of structural and behavioral invariants.
+% \end{itemize} 
+
+\noindent{\textbf{\textbf{Yale Aerospace Association}}, CubeSat (Satellite) Lead Developer \href{https://yaleaerospace.org/main/cubesat}{[View]}
+\hfill\textit{Sep 2023 - Jan 2024 [4 month]}
+\begin{itemize}[topsep=1pt]
+\setlength\itemsep{-0.3em}
+  \item[$\blacktriangleright$] \setstretch{1.2} Co-developed the core avionics system for a CubeSat 2U satellite planned to be deployed by NASA ISS.
+\end{itemize}
+
+% \noindent{\textbf{Yale Computer Society}, Project Co-Founder \& Lead Developer \href{https://yaleclubs.io/}{[View]} \setstretch{1.2}
+% \hfill \textit{Sep 2023 - May 2024 [9 month]}
+% \begin{itemize}[topsep=1pt]
+% \setlength\itemsep{-0.3em}
+%   \item[$\blacktriangleright$] \setstretch{1.2} 
+%   \href{https://yalecomputersociety.org/}{Lead a group} of 9 in developing a user-friendly web and iOS cross-platform for 200+ clubs and 2000+ users.
+% \end{itemize} \vspace{0.7ex}
+
+
+
+
+% \vspace{-2.6ex}
+% \section*{\vspace{0ex}\textcolor{gray}{\rule[0ex]{0em}{0ex}}\hspace{0em}\normalsize\textnormal{\textcolor{darkgray}{MANUSCRIPTS}}\hspace{0.7em}\textcolor{customcolor}{\rule[0.5ex]{\dimexpr\linewidth-8em}{0.5pt}}\vspace{-2ex}}
+
+% \noindent\textbf{Brain-Computer Interfaces}, Senior Thesis \hfill \textit{July 2025 – Present}
+% \begin{itemize}[noitemsep, topsep=1pt]
+%   \item Robustness for ctitical infra. \\
+%   Hopefully I can place also publish it?
+% \end{itemize}
+
+% \noindent\textbf{Fast Raft: Hierarchical Consensus for Dynamic Networks} \hfill \textit{Nov 2024 – Feb 2025}
+% \begin{itemize}[noitemsep, topsep=1pt]
+% \item The first \href{https://github.com/anton-mel/FastRaft}{open-source} implementation of Fast Raft, a hierarchical consensus protocol designed for wide-area dynamic networks; achieved up to 2× faster commit latency and 5× higher throughput compared to Vanilla Raft.
+% \item Containerized, deployed, end \href{https://drive.google.com/file/d/1CAnlGilz4y45UXrxEveRO-Res6b4B9j5/view}{evaluated on AWS EKS via Terraform} using HCL orchestration across three US regions.
+% \end{itemize}
+
+
+
+% \noindent{\textbf{Reverse Engineering Binary Bomb}, Systems Programming Course Workshop \setstretch{1.2}
+% \hfill \textit{Nov 2024 - Dec 2024}
+% \begin{itemize}[topsep=1pt]
+% \setlength\itemsep{-0.3em}
+%   \item\setstretch{1.2} Leveraged the knowledge of GDB gained during training to pass an assembly binary bomb by reverse-engineering x86-asm and binaries to complete 10 phases. Acquired additional knowledge of Ghidra and IDA.
+% \end{itemize}
+
+
+
+% \noindent{\textbf{Memory Sanitizer}, Personal Project \setstretch{1.2}
+% \hfill \textcolor[RGB]{153, 153, 153}{\textit{Jan 2024}}
+% \begin{itemize}[topsep=1pt]
+% \setlength\itemsep{0.29em}
+%   \item\setstretch{1.2} Designed and build \textbf{a debugging memory allocator} akin to simplified \texttt{Valgrind} in C to track memory usage, heavy allocation regions, and catch common memory errors (e.g. usage after free, double free, memory leak).
+% \end{itemize}
+
+
+
+
+% \section*{\vspace{0ex}\textcolor{gray}{\rule[0ex]{0em}{0ex}}\hspace{0em}\normalsize\textnormal{\textcolor{gray}{CERTIFICATES}}\hspace{0.7em}\textcolor{customcolor}{\rule[0.5ex]{\dimexpr\linewidth-7em}{0.5pt}}\vspace{-2ex}}
+
+% \begin{center}
+%   \begin{minipage}[t]{0.47\textwidth}
+%     \textbf{Python for Computer Vision} offered by Udemy.
+%   \end{minipage}
+%   \hfill
+%   \begin{minipage}[t]{0.47\textwidth}
+%     \textbf{Computer Vision and Image Processing}; IBM, Coursera.
+%   \end{minipage}
+% \end{center}\vspace{-4ex}
+
+\end{document}
