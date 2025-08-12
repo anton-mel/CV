@@ -26,17 +26,25 @@ jobs:
         echo "Git status:"
         git status
     
-    - name: Install LaTeX
+    - name: Install LaTeX with CJK support
       run: |
         sudo apt-get update
-        sudo apt-get install -y texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra
+        sudo apt-get install -y texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra texlive-lang-chinese texlive-lang-japanese texlive-lang-korean texlive-xetex
         
     - name: Compile LaTeX to PDF
       run: |
-        # Find all .tex files and compile them
+        # Try to compile with XeLaTeX first (for CJK support)
+        if [ -f "fixed.tex" ]; then
+          echo "Compiling fixed.tex with XeLaTeX..."
+          xelatex -interaction=nonstopmode "fixed.tex"
+          xelatex -interaction=nonstopmode "fixed.tex"
+          echo "XeLaTeX compilation completed"
+        fi
+        
+        # Also compile other .tex files with pdflatex as backup
         for tex_file in *.tex; do
-          if [ -f "$tex_file" ]; then
-            echo "Compiling $tex_file..."
+          if [ -f "$tex_file" ] && [ "$tex_file" != "fixed.tex" ]; then
+            echo "Compiling $tex_file with pdflatex..."
             pdflatex -interaction=nonstopmode "$tex_file"
             # Run twice to resolve references
             pdflatex -interaction=nonstopmode "$tex_file"
