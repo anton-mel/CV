@@ -1,35 +1,73 @@
-name: Compile Resume PDF
+name: Compile LaTeX Resume
 
 on:
   push:
     branches: [ main ]
+    paths: [ '**.tex' ]  # Only run when .tex files are modified
   pull_request:
     branches: [ main ]
+    paths: [ '**.tex' ]
+  workflow_dispatch:  # Allow manual triggering
 
 jobs:
-  compile-resume:
+  compile-latex:
     runs-on: ubuntu-latest
     
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-      
-    - name: Set up LaTeX
-      uses: xu-cheng/latex-action@v3
       with:
-        root_file: fixed.tex
-        latexmk_use_xelatex: true
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Install LaTeX
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra
         
-    - name: Upload PDF artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: resume-pdf
-        path: fixed.pdf
+    - name: Compile LaTeX to PDF
+      run: |
+        # Find all .tex files and compile them
+        for tex_file in *.tex; do
+          if [ -f "$tex_file" ]; then
+            echo "Compiling $tex_file..."
+            pdflatex -interaction=nonstopmode "$tex_file"
+            # Run twice to resolve references
+            pdflatex -interaction=nonstopmode "$tex_file"
+            echo "Successfully compiled $tex_file to ${tex_file%.tex}.pdf"
+          fi
+        done
         
-    - name: Commit PDF to repository
+    - name: Check if PDF was generated
+      run: |
+        if ls *.pdf 1> /dev/null 2>&1; then
+          echo "PDF files generated successfully:"
+          ls -la *.pdf
+        else
+          echo "No PDF files found!"
+          exit 1
+        fi
+        
+    - name: Commit and push PDF
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add fixed.pdf
-        git commit -m "Auto-compile: Update resume PDF [skip ci]" || exit 0
-        git push
+        
+        # Add all generated PDF files
+        git add *.pdf
+        
+        # Check if there are changes to commit
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "Auto-compile: Update resume PDF [skip ci]"
+          git push
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Upload PDF artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: resume-pdf
+        path: '*.pdf'
+        retention-days: 30
