@@ -31,13 +31,25 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra texlive-lang-chinese texlive-lang-japanese texlive-lang-korean texlive-xetex
         
+    - name: Install system fonts
+      run: |
+        sudo apt-get install -y fonts-liberation fonts-liberation-sans fonts-liberation-serif fonts-dejavu fonts-dejavu-sans fonts-dejavu-serif
+        sudo fc-cache -fv
+        
+    - name: Setup font mapping for Georgia
+      run: |
+        # Create a font mapping to replace Georgia with an available serif font
+        echo 'Georgia = "Liberation Serif"' >> /tmp/fontmap.map
+        echo 'Georgia = "DejaVu Serif"' >> /tmp/fontmap.map
+        echo 'Georgia = "Times New Roman"' >> /tmp/fontmap.map
+        
     - name: Compile LaTeX to PDF
       run: |
         # Try to compile with XeLaTeX first (for CJK support)
         if [ -f "fixed.tex" ]; then
           echo "Compiling fixed.tex with XeLaTeX..."
-          xelatex -interaction=nonstopmode "fixed.tex"
-          xelatex -interaction=nonstopmode "fixed.tex"
+          xelatex -interaction=nonstopmode -fontspec="Georgia=Liberation Serif" "fixed.tex"
+          xelatex -interaction=nonstopmode -fontspec="Georgia=Liberation Serif" "fixed.tex"
           echo "XeLaTeX compilation completed"
         fi
         
