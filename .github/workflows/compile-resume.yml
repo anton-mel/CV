@@ -5,99 +5,114 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-  workflow_dispatch:  # Allow manual triggering
+  workflow_dispatch:
+
+env:
+  # Optionally set this to your entrypoint tex file (e.g., resume.tex, main.tex)
+  # If empty, the job will auto-detect the first tracked .tex file.
+  MAIN_TEX: ""
 
 jobs:
   compile-latex:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        
-    - name: Debug - Show what files changed
-      run: |
-        echo "Files in this commit:"
-        git log --name-only --pretty=format: -1
-        echo "Current working directory contents:"
-        ls -la
-        echo "Git status:"
-        git status
-    
-    - name: Install LaTeX with CJK support
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra texlive-lang-chinese texlive-lang-japanese texlive-lang-korean texlive-xetex
-        
-    - name: Install system fonts
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y fonts-liberation fonts-dejavu fonts-noto fonts-noto-cjk
-        sudo fc-cache -fv
-        
-    - name: Create LaTeX font mapping file
-      run: |
-        # Create a LaTeX font mapping file that replaces Georgia with available fonts
-        cat > /tmp/fontmap.tex << 'EOF'
-        \setmainfont{Liberation Serif}[
-          UprightFont = *-Regular,
-          BoldFont = *-Bold,
-          ItalicFont = *-Italic,
-          BoldItalicFont = *-BoldItalic,
-        ]
-        EOF
-        
-    - name: Compile LaTeX to PDF
-      run: |
-        # Try to compile with XeLaTeX first (for CJK support)
-        if [ -f "fixed.tex" ]; then
-          echo "Compiling fixed.tex with XeLaTeX..."
-          # Create a temporary version with font substitution
-          sed 's/\\setmainfont{Georgia}/\\setmainfont{Liberation Serif}/g' fixed.tex > fixed_temp.tex
-          xelatex -interaction=nonstopmode "fixed_temp.tex"
-          xelatex -interaction=nonstopmode "fixed_temp.tex"
-          # Copy the generated PDF to the expected name
-          if [ -f "fixed_temp.pdf" ]; then
-            cp fixed_temp.pdf fixed.pdf
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Debug - Show repo state
+        run: |
+          echo "Commit files:"
+          git log --name-only --pretty=format: -1
+          echo "Working dir:"
+          ls -la
+          echo "Tracked .tex files:"
+          git ls-files '*.tex' || true
+
+      - name: Install TeX (XeLaTeX + latexmk) and CJK fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            texlive-latex-base texlive-latex-extra texlive-fonts-recommended \
+            texlive-fonts-extra texlive-lang-chinese texlive-lang-japanese \
+            texlive-lang-korean texlive-xetex latexmk \
+            fonts-liberation fonts-dejavu fonts-noto fonts-noto-cjk
+          sudo fc-cache -fv
+
+      - name: Choose main .tex
+        id: choose
+        shell: bash
+        run: |
+          set -euo pipefail
+          main="${MAIN_TEX}"
+          if [[ -z "${main}" ]]; then
+            # Prefer common names; fall back to first tracked .tex
+            for cand in resume.tex main.tex fixed.tex cv.tex; do
+              [[ -f "$cand" ]] && main="$cand" && break
+            done
+            [[ -z "${main}" ]] && main="$(git ls-files '*.tex' | head -n1 || true)"
           fi
-          echo "XeLaTeX compilation completed"
-        fi
-        
-        echo "Compilation completed successfully!"
-        
-    - name: Check if PDF was generated
-      run: |
-        if ls *.pdf 1> /dev/null 2>&1; then
-          echo "PDF files generated successfully:"
+
+          if [[ -z "${main}" ]]; then
+            echo "ERROR: No .tex files found. Set env MAIN_TEX or add a .tex file." >&2
+            exit 1
+          fi
+
+          echo "Using main tex: $main"
+          echo "main_tex=$main" >> "$GITHUB_OUTPUT"
+
+      - name: Prepare build file (font fallback for Georgia)
+        id: prep
+        shell: bash
+        run: |
+          set -euo pipefail
+          main="${{ steps.choose.outputs.main_tex }}"
+          # Create a temp build file, optionally substituting Georgia
+          build="build_${main}"
+          cp "$main" "$build"
+          # Swap Georgia → Liberation Serif if present to avoid missing font failures
+          sed -i 's/\\setmainfont{[Gg]eorgia}/\\setmainfont{Liberation Serif}/g' "$build"
+          echo "build_tex=$build" >> "$GITHUB_OUTPUT"
+
+      - name: Compile with latexmk (XeLaTeX)
+        shell: bash
+        run: |
+          set -euo pipefail
+          build="${{ steps.prep.outputs.build_tex }}"
+          echo "Compiling $build ..."
+          latexmk -xelatex -interaction=nonstopmode -halt-on-error -file-line-error "$build"
+          # latexmk outputs PDF as ${build%.tex}.pdf
+          out_pdf="${build%.tex}.pdf"
+          if [[ ! -f "$out_pdf" ]]; then
+            echo "ERROR: Expected $out_pdf not found." >&2
+            exit 1
+          fi
+          # Normalize the output filename for downstream usage
+          mv "$out_pdf" resume.pdf
+          echo "Generated resume.pdf"
+
+      - name: Show generated PDFs
+        run: |
           ls -la *.pdf
-        else
-          echo "No PDF files found!"
-          exit 1
-        fi
-        
-    - name: Commit and push PDF
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        
-        # Add all generated PDF files
-        git add *.pdf
-        
-        # Check if there are changes to commit
-        if git diff --staged --quiet; then
-          echo "No changes to commit"
-        else
-          git commit -m "Auto-compile: Update resume PDF [skip ci]"
-          git push
-        fi
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
-    - name: Upload PDF artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: resume-pdf
-        path: '*.pdf'
-        retention-days: 30
+
+      - name: Commit and push PDF
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add resume.pdf
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Auto-compile: Update resume PDF [skip ci]"
+            git push
+          fi
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: resume-pdf
+          path: resume.pdf
+          retention-days: 30
