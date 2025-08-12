@@ -1,0 +1,35 @@
+name: Compile Resume PDF
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  compile-resume:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up LaTeX
+      uses: xu-cheng/latex-action@v3
+      with:
+        root_file: fixed.tex
+        latexmk_use_xelatex: true
+        
+    - name: Upload PDF artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: resume-pdf
+        path: fixed.pdf
+        
+    - name: Commit PDF to repository
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add fixed.pdf
+        git commit -m "Auto-compile: Update resume PDF [skip ci]" || exit 0
+        git push 
