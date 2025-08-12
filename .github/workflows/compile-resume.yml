@@ -33,7 +33,8 @@ jobs:
         
     - name: Install system fonts
       run: |
-        sudo apt-get install -y fonts-liberation fonts-liberation-sans fonts-liberation-serif fonts-dejavu fonts-dejavu-sans fonts-dejavu-serif
+        sudo apt-get update
+        sudo apt-get install -y fonts-liberation fonts-dejavu fonts-noto fonts-noto-cjk
         sudo fc-cache -fv
         
     - name: Setup font mapping for Georgia
@@ -43,13 +44,30 @@ jobs:
         echo 'Georgia = "DejaVu Serif"' >> /tmp/fontmap.map
         echo 'Georgia = "Times New Roman"' >> /tmp/fontmap.map
         
+    - name: Create fontspec configuration
+      run: |
+        # Create a fontspec config that maps Georgia to available fonts
+        mkdir -p ~/.config/fontconfig
+        echo '<?xml version="1.0"?>
+        <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+        <fontconfig>
+          <alias>
+            <family>Georgia</family>
+            <prefer>
+              <family>Liberation Serif</family>
+              <family>DejaVu Serif</family>
+              <family>Times New Roman</family>
+            </prefer>
+          </alias>
+        </fontconfig>' > ~/.config/fontconfig/fonts.conf
+        
     - name: Compile LaTeX to PDF
       run: |
         # Try to compile with XeLaTeX first (for CJK support)
         if [ -f "fixed.tex" ]; then
           echo "Compiling fixed.tex with XeLaTeX..."
-          xelatex -interaction=nonstopmode -fontspec="Georgia=Liberation Serif" "fixed.tex"
-          xelatex -interaction=nonstopmode -fontspec="Georgia=Liberation Serif" "fixed.tex"
+          xelatex -interaction=nonstopmode "fixed.tex"
+          xelatex -interaction=nonstopmode "fixed.tex"
           echo "XeLaTeX compilation completed"
         fi
         
