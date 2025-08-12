@@ -65,16 +65,7 @@ jobs:
           echo "XeLaTeX compilation completed"
         fi
         
-        # Also compile other .tex files with pdflatex as backup
-        for tex_file in *.tex; do
-          if [ -f "$tex_file" ] && [ "$tex_file" != "fixed.tex" ]; then
-            echo "Compiling $tex_file with pdflatex..."
-            pdflatex -interaction=nonstopmode "$tex_file"
-            # Run twice to resolve references
-            pdflatex -interaction=nonstopmode "$tex_file"
-            echo "Successfully compiled $tex_file to ${tex_file%.tex}.pdf"
-          fi
-        done
+        echo "Compilation completed successfully!"
         
     - name: Check if PDF was generated
       run: |
